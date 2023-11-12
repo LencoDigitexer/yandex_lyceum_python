@@ -1,0 +1,55 @@
+class HumptyDumpty:
+    def __init__(self, height, width):
+        self.height = height
+        self.width = width
+
+    def __iadd__(self, number):
+        two_thirds = number * 2 // 3
+
+        self.height += two_thirds
+        self.width += number - two_thirds
+
+        return self
+
+    def __isub__(self, number):
+        two_thirds = number * 2 // 3
+
+        self.height -= two_thirds
+        self.width -= number - two_thirds
+
+        self.height = max(1, self.height)
+        self.width = max(1, self.width)
+
+        return self
+
+    def __add__(self, other):
+        new_height = self.height + other.height
+        new_width = self.width + other.width
+
+        return HumptyDumpty(new_height, new_width)
+
+    def __truediv__(self, number):
+
+        if not isinstance(number, int) or not (number > 0):
+            raise ValueError("number must be positive integer")
+
+        else:
+            result = []
+            for i in range(number):
+                result.append(HumptyDumpty(self.height // number, self.width // number))
+
+        return result
+
+    def __str__(self):
+        return f"Humpty Dumpty has sizes: {self.height}, {self.width}"
+
+    def __repr__(self):
+        return f"HumptyDumpty({self.height}, {self.width})"
+
+hd = HumptyDumpty(5, 3)
+hd += 7
+res = hd / 4
+res[0] += 3
+print(res)
+print()
+print(hd)
